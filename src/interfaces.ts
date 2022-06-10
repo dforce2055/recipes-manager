@@ -4,3 +4,10 @@ export interface Card {
   matched: boolean,
   disabled: boolean
 }
+export interface Recipe {
+  id: string | number
+  title: string,
+  ingredients: string[],
+  method: string,
+  cookingTime: string
+}
