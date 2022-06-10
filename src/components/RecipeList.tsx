@@ -1,5 +1,4 @@
 import './recipe-list.css'
-import React from 'react';
 import { Recipe } from '../interfaces'
 import { Link } from 'react-router-dom'
 

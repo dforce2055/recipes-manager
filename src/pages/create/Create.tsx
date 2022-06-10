@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { Recipe } from '../../interfaces'
 import { v4 as uuid } from 'uuid'
@@ -15,11 +15,12 @@ const Create = () => {
   const [ingredients, setIngredients] = useState<string[]>([])
   const ingredientInput = useRef<any>(null)
   const [recipesLS, setRecipesLS] = useLocalStorage<Recipe[]>("recipes", [])
+  const [newRecipe, setNewRecipe] = useState<Recipe | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   // TODO: implemente post and save it on Firebase
   // const { postData, data } = useFetch('http://localhost:3000/recipes', 'POST')
-  const navigate = useNavigate()
 
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -31,17 +32,22 @@ const Create = () => {
         recipes = [...recipesLS]
       
       const newRecipe: Recipe = { id: uuid(), title, method, cookingTime, ingredients }
+      setNewRecipe(newRecipe)
+
       recipes = [...recipes, newRecipe]
 
       setRecipesLS(recipes)
-      navigate('/')
       // TODO: implemente post and save it on Firebase
       // postData({ title, ingredients, method, cookingTime: cookingTime + ' minutes' })
     } catch (error) {
       setError('Error creating recipe')
     }
-    
   }
+
+  useEffect(() => {
+    if (newRecipe)
+      navigate('/')
+  }, [newRecipe, navigate])
 
   const handleAddIngredient = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault()
