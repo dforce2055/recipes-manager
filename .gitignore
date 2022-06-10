@@ -30,3 +30,6 @@ firebase.*
 
 # anotaciones
 .anotaciones.md
+
+# environment variables
+.env
