@@ -3,10 +3,16 @@ import { Recipe } from '../interfaces'
 import { Link } from 'react-router-dom'
 
 interface Props {
-  recipes: Recipe[]
+  recipes: Recipe[],
+  showRemove?: boolean,
+  removeRecipe?: (id: string | number) => void
 }
 
-const RecipeList = ({ recipes }: Props) => {
+const RecipeList = ({ recipes, showRemove, removeRecipe }: Props) => {
+  const handleRemove = (id: string | number) => { 
+    if (removeRecipe)
+      removeRecipe(id)
+  }
   return (
     <div className='recipe-list'>
       {recipes.map(recipe => (
@@ -14,6 +20,14 @@ const RecipeList = ({ recipes }: Props) => {
           className='card'
           key={recipe.id}
         >
+          {showRemove &&
+            <span
+              className='remove'
+              onClick={(e) => handleRemove(recipe.id)}
+            >
+              Remove (?)
+            </span>
+          }
           <h3>{recipe.title}</h3>
           <p>{recipe.cookingTime} to make</p>
           <div>{recipe.method.substring(0, 100)}..</div>

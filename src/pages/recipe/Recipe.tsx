@@ -1,24 +1,33 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from 'react'
 import { useFetch } from '../../hooks/useFetch'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { Recipe } from '../../interfaces'
 // styles
 import './recipe.css'
 
 const RecipePage = () => {
   const { recipeId } = useParams()
-  const { data, isPending, error } = useFetch('http://localhost:3000/data/db.json')
+  const { data, isPending, error } = useFetch(`${process.env.REACT_APP_API_URL}/data/db.json`)
   const [recipe, setRecipe] = useState <Recipe | null>(null)
   const [customErrorMessage, setCustomErrorMessage] = useState <string>('Error')
+  const [recipesLS, setRecipesLS] = useLocalStorage<Recipe[]>("recipes", [])
 
   useEffect(() => {
-    const recipe: Recipe = data?.recipes.find((recipe: Recipe) => recipe.id === recipeId)
+    let recipes: Recipe[] = []
+
+    if (recipesLS.length > 0)
+      recipes = recipesLS
+    else if (data?.recipes)
+      recipes = data?.recipes
+
+    const recipe: Recipe | undefined = recipes.find((recipe: Recipe) => recipe.id === recipeId)
     
     if(recipe)
       setRecipe(recipe)
     else
       setCustomErrorMessage(`Recipe with the id: ${recipeId} was not found`)
-  }, [recipeId, data])
+  }, [recipeId, data, recipesLS])
 
   return (
     <div className="recipe">

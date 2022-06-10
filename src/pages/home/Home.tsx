@@ -12,6 +12,18 @@ function Home() {
   const [recipes, setRecipes] = useState<Recipe[]>([])
   const [recipesLS, setRecipesLS] = useLocalStorage<Recipe[]>("recipes", [])
 
+  const removeRecipe = (id: string | number) => {
+    try {
+      console.log('removeRecipe', id)
+      if (id) {
+        const newRecipes = recipes.filter((recipe: Recipe) => recipe.id !== id)
+        setRecipesLS(newRecipes)
+      }
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+
   useEffect(() => {
     let recipes: Recipe[] = []
 
@@ -32,7 +44,7 @@ function Home() {
       {error && <p className='error'>{error}</p>}
       {isPending && <p className='loading'>Loading ...</p>}
       
-      {data && <RecipeList recipes={recipes} />}
+      {data && <RecipeList recipes={recipes} showRemove={true} removeRecipe={removeRecipe} />}
     </div>
   )
 }

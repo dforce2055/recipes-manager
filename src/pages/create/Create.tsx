@@ -20,7 +20,7 @@ const Create = () => {
   const navigate = useNavigate()
 
   // TODO: implemente post and save it on Firebase
-  // const { postData, data } = useFetch('http://localhost:3000/recipes', 'POST')
+  // const { postData, data } = useFetch(`${process.env.REACT_APP_API_URL}/data/db.json`)
 
 
   const handleSubmit = (e: React.FormEvent) => {

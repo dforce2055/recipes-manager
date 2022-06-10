@@ -8,7 +8,7 @@ import RecipeList from '../../components/RecipeList'
 import './search.css'
 
 const Search = () => {
-  const { data, isPending, error } = useFetch('http://localhost:3000/data/db.json')
+  const { data, isPending, error } = useFetch(`${process.env.REACT_APP_API_URL}/data/db.json`)
   const [recipes, setRecipes] = useState <Recipe[] | null>(null)
   const [query, setQuery] = useState<string>('')
   const [customErrorMessage, setCustomErrorMessage] = useState<string>('Error')
@@ -50,7 +50,7 @@ const Search = () => {
       {recipes && recipes.length > 0 &&
         <>
           <h2 className='page-title'>Recipes includes "{query}"</h2> 
-          <RecipeList recipes={recipes} />
+        <RecipeList recipes={recipes} />
         </>
       }
     </div>
